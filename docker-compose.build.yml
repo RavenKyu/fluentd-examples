@@ -1,0 +1,20 @@
+version: '3.5'
+
+services:
+  test-dummy-file-logs:
+    image: test-dummy-file-logs:latest
+    build:
+      context: ./src/dummy-file-logs
+      dockerfile: Dockerfile
+
+  test-dummy-json-stream-logs:
+    image: test-dummy-json-stream-logs:latest
+    build:
+      context: ./src/dummy-json-stream-logs
+      dockerfile: Dockerfile
+
+  fluentd:
+    image: test-fluentd:latest
+    build:
+      context: ./src/fluentd
+      dockerfile: Dockerfile

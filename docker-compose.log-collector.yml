@@ -1,0 +1,29 @@
+version: "3.5"
+
+services:
+  mongodb:
+    image: mongo:3.6.20-xenial
+    container_name: mongodb
+    command: --bind_ip 0.0.0.0
+    ports:
+      - 27017:27017
+    volumes:
+      - ./dhv/data/mongo:/data/db
+    networks:
+      - raven_network
+
+  fluentd:
+    image: test-fluentd:latest
+    container_name: fluentd
+    ports:
+      - '24224:24224'
+    volumes:
+      - ./fluent.conf:/fluentd/etc/fluent.conf
+      - ./dhv/logs/fluentd:/var/log/
+      - ./dhv/logs:/var/log/apps/
+    networks:
+      - raven_network
+
+networks:
+  raven_network:
+    external: true

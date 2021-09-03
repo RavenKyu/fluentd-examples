@@ -1,0 +1,66 @@
+networks:
+  raven_network:
+    external: true
+    name: raven_network
+services:
+  dummy-file-logs-1:
+    command: 'dummy-file-logs-1 -l /var/log/app/app.log -i 0.3
+
+      '
+    container_name: test-dummy-file-logs-1
+    image: test-dummy-file-logs:latest
+    networks:
+      raven_network: {}
+    volumes:
+    - /Users/limdukkyu/Works/studies/fluentd-example/dhv/logs/test-dummy-file-logs-1:/var/log/app:rw
+  dummy-file-logs-2:
+    command: 'dummy-file-logs-2 -l /var/log/app/app.log -i 0.3
+
+      '
+    container_name: test-dummy-file-logs-2
+    image: test-dummy-file-logs:latest
+    networks:
+      raven_network: {}
+    volumes:
+    - /Users/limdukkyu/Works/studies/fluentd-example/dhv/logs/test-dummy-file-logs-2:/var/log/app:rw
+  dummy-json-stream-logs:
+    command: 'dummy-json-stream-logs -i 0.3
+
+      '
+    container_name: test-dummy-json-stream-logs
+    depends_on:
+      fluentd:
+        condition: service_started
+    image: test-dummy-json-stream-logs:latest
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: localhost:24224
+        tag: dummy-logs.json
+    networks:
+      raven_network: {}
+  fluentd:
+    container_name: fluentd
+    image: test-fluentd:latest
+    networks:
+      raven_network: {}
+    ports:
+    - published: 24224
+      target: 24224
+    volumes:
+    - /Users/limdukkyu/Works/studies/fluentd-example/fluent.conf:/fluentd/etc/fluent.conf:rw
+    - /Users/limdukkyu/Works/studies/fluentd-example/dhv/logs/fluentd:/var/log:rw
+    - /Users/limdukkyu/Works/studies/fluentd-example/dhv/logs:/var/log/apps:rw
+  mongodb:
+    command: --bind_ip 0.0.0.0
+    container_name: mongodb
+    image: mongo:3.6.20-xenial
+    networks:
+      raven_network: {}
+    ports:
+    - published: 27017
+      target: 27017
+    volumes:
+    - /Users/limdukkyu/Works/studies/fluentd-example/dhv/data/mongo:/data/db:rw
+version: '3.5'
+
