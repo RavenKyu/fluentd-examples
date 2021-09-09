@@ -21,6 +21,16 @@ services:
     networks:
       - raven_network
 
+  dummy-json-file-logs-1:
+    image: test-dummy-json-file-logs:latest
+    container_name: test-dummy-json-file-logs-1
+    volumes:
+      - ./dhv/logs/test-dummy-json-file-logs-1:/var/log/app
+    command: |
+      dummy-json-file-logs-1 -l /var/log/app/app.log -i 0.1
+    networks:
+      - raven_network
+
   dummy-json-stream-logs:
     image: test-dummy-json-stream-logs:latest
     container_name: test-dummy-json-stream-logs

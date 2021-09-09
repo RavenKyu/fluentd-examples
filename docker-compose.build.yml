@@ -7,6 +7,12 @@ services:
       context: ./src/dummy-file-logs
       dockerfile: Dockerfile
 
+  test-dummy-json-file-logs:
+    image: test-dummy-json-file-logs:latest
+    build:
+      context: ./src/dummy-json-file-logs
+      dockerfile: Dockerfile
+
   test-dummy-json-stream-logs:
     image: test-dummy-json-stream-logs:latest
     build:

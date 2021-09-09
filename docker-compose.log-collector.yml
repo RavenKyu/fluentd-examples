@@ -18,7 +18,7 @@ services:
     ports:
       - '24224:24224'
     volumes:
-      - ./fluent.conf:/fluentd/etc/fluent.conf
+      - ./src/fluentd:/fluentd/etc/
       - ./dhv/logs/fluentd:/var/log/
       - ./dhv/logs:/var/log/apps/
     networks:
